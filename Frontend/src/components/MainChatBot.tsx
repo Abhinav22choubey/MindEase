@@ -31,7 +31,7 @@ const MainChatBot = () => {
     setMessages((prev) => [...prev, { sender: "user", text: input }]);
     try {
       setLoad(true);
-      const res = await fetch("https://mind-ease-backend.vercel.app/chat", {
+      const res = await fetch("http://localhost:5000/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ _id: uniqueId, msg: input }),
