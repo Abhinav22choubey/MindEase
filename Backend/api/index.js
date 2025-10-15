@@ -150,7 +150,7 @@ app.post("/mental-health", async (req, res) => {
 // --------------------- SOCKET.IO (REALTIME CHAT) ---------------------
 const io = new Server(server, {
   cors: {
-    origin: "https://mind-ease-frontend-262m.vercel.app", // your frontend port
+    origin: ["https://mind-ease-frontend-262m.vercel.app ","http://localhost:1234" ],// your frontend port
     methods: ["GET", "POST"],
   },
 });
