@@ -3,14 +3,14 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-import MentalHealth from "./pages/Question/MentalHealth";
-import Login from "./pages/Auth/Login";
-import Register from "./pages/Auth/Register";
-import Dashboard from "./pages/Auth/Dashboard";
+import Index from "./pages/Index.js";
+import NotFound from "./pages/NotFound.js";
+import MentalHealth from "../pages/Question/MentalHealth.js";
+import Login from "../pages/Auth/Login.js";
+import Register from "../pages/Auth/Register.js";
+import Dashboard from "../pages/Auth/Dashboard.js";
 import { AuthProvider, useAuth } from "./AuthContext.jsx";
-import Wchat from "./pages/Wchatapp.jsx"
+import Wchat from "../pages/Wchatapp.js"
 
 const queryClient = new QueryClient();
 
