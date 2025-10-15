@@ -2,18 +2,25 @@ import { useState } from "react";
 import { Bell, MessageCircle, User, Menu, X, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const navItems = [
-    { name: "Home", href: "#", active: false },
+    { name: "Home", href: "/Home", active: false },
+    { name: "Dashboard", href: "/profile", icon: User }, // Dashboard / Profile link
     { name: "Notifications", href: "#notifications", icon: Bell },
     { name: "Messages", href: "/wchat", icon: MessageCircle },
     { name: "About", href: "#about" },
     { name: "Contact Us", href: "#contact" },
   ];
+
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // remove auth token
+    navigate("/login"); // redirect to login
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
@@ -50,7 +57,7 @@ const Header = () => {
                   asChild
                 >
                   <Link to={item.href} className="flex items-center space-x-2">
-                    {item.icon && <item.icon className="w-4 h-4" />}
+                    {Icon && <Icon className="w-4 h-4" />}
                     <span>{item.name}</span>
                     {item.name === "Notifications" && (
                       <Badge className="ml-1 bg-secondary text-secondary-foreground text-xs">
@@ -70,12 +77,16 @@ const Header = () => {
 
           {/* Profile and Mobile Menu */}
           <div className="flex items-center space-x-3">
+            {/* Desktop Profile */}
             <Button
               variant="outline"
               size="icon"
+              asChild
               className="hidden sm:flex border-primary/20 hover:bg-primary/10 hover:border-primary/40 transition-smooth"
             >
-              <User className="w-4 h-4" />
+              <Link to="/profile">
+                <User className="w-4 h-4" />
+              </Link>
             </Button>
 
             {/* Mobile Menu Button */}
@@ -111,7 +122,11 @@ const Header = () => {
                     }`}
                     asChild
                   >
-                    <a href={item.href} className="flex items-center space-x-3">
+                    <Link
+                      to={item.href}
+                      className="flex items-center space-x-3"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
                       {Icon && <Icon className="w-4 h-4" />}
                       <span>{item.name}</span>
                       {item.name === "Notifications" && (
@@ -124,17 +139,51 @@ const Header = () => {
                           2
                         </Badge>
                       )}
-                    </a>
+                    </Link>
                   </Button>
                 );
               })}
-              <div className="pt-2 border-t">
+
+              {/* Mobile Profile / Dashboard / Logout */}
+              <div className="pt-2 border-t space-y-2">
                 <Button
                   variant="outline"
-                  className="w-full justify-start border-primary/20 hover:bg-primary/10"
+                  className="w-full justify-start"
+                  asChild
                 >
-                  <User className="w-4 h-4 mr-3" />
-                  Profile
+                  <Link
+                    to="/profile"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center space-x-3"
+                  >
+                    <User className="w-4 h-4" />
+                    Profile
+                  </Link>
+                </Button>
+
+                <Button
+                  variant="outline"
+                  className="w-full justify-start"
+                  asChild
+                >
+                  <Link
+                    to="/profile"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center space-x-3"
+                  >
+                    Dashboard
+                  </Link>
+                </Button>
+
+                <Button
+                  variant="destructive"
+                  className="w-full justify-start"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    handleLogout();
+                  }}
+                >
+                  Logout
                 </Button>
               </div>
             </nav>

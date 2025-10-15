@@ -10,7 +10,8 @@ import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import Dashboard from "./pages/Auth/Dashboard";
 import { AuthProvider, useAuth } from "./AuthContext.jsx";
-import Wchat from "./pages/Wchatapp.jsx"
+import Wchat from "./pages/Wchatapp.jsx";
+import DashIndex from "./pages/DashIndex.jsx";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +58,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Wchat/>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <DashIndex/>
                 </ProtectedRoute>
               }
             />
