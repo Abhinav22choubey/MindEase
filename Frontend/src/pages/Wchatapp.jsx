@@ -6,7 +6,7 @@ const socket = io("https://mind-ease-backend-n95p.onrender.com"); // backend URL
 
 const Wchatapp = () => {
   const { user } = useAuth();
-  const myEmail = user?.email || ""; // get logged-in email
+  const myEmail = user?.email || "";
 
   const [message, setMessage] = useState("");
   const [chats, setChats] = useState([]);
@@ -17,7 +17,6 @@ const Wchatapp = () => {
   const [selectedChat, setSelectedChat] = useState(null);
   const [messages, setMessages] = useState({}); // { chatId: [msg1, msg2] }
 
-  // Listen for incoming messages
   useEffect(() => {
     socket.on("receive_message", (data) => {
       setMessages((prev) => ({
@@ -29,10 +28,8 @@ const Wchatapp = () => {
     return () => socket.off("receive_message");
   }, []);
 
-  // Handle selecting a chat
   const handleSelectChat = (chat) => {
     setSelectedChat(chat.id);
-
     const roomId =
       myEmail > chat.email
         ? `${chat.email}_${myEmail}`
@@ -40,7 +37,6 @@ const Wchatapp = () => {
     socket.emit("join-room", roomId);
   };
 
-  // Send message
   const sendMessage = () => {
     if (!selectedChat || message.trim() === "") return;
 
@@ -64,7 +60,6 @@ const Wchatapp = () => {
     setMessage("");
   };
 
-  // Add new contact
   const AddDetail = () => {
     setId(id + 1);
     setChats((prev) => [...prev, { id: id + 1, name: addName, email: addEmail }]);
@@ -75,12 +70,10 @@ const Wchatapp = () => {
 
   return (
     <>
-      {/* Display logged-in email */}
       <div className="p-4 text-primary font-semibold">Logged in as: {myEmail}</div>
 
-      {/* Add new contact form */}
       {!add && (
-        <div className="p-4 bg-card/80 rounded-lg m-4 shadow-md border border-primary/20">
+        <div className="fixed bottom-0 left-0 w-full p-4 bg-card/90 rounded-t-lg shadow-md border-t border-primary/20 z-50">
           <label className="block text-primary font-semibold mb-1">Name</label>
           <input
             type="text"
@@ -97,18 +90,18 @@ const Wchatapp = () => {
           />
           <button
             onClick={AddDetail}
-            className="bg-gradient-primary text-primary-foreground px-4 py-2 rounded-lg shadow-glow hover:shadow-primary transition"
+            className="w-full bg-gradient-primary text-primary-foreground px-4 py-2 rounded-lg shadow-glow hover:shadow-primary transition"
           >
             Add Contact
           </button>
         </div>
       )}
 
-      {/* Chat UI */}
       {add && (
-        <div className="h-screen grid grid-cols-[300px_1fr] bg-background">
+        <div className="flex flex-col md:flex-row h-[calc(100vh-64px)] bg-background"> 
+          {/* subtract header height if needed */}
           {/* Sidebar */}
-          <div className="bg-card/80 border-r border-primary/20 flex flex-col">
+          <div className="md:w-72 w-full bg-card/80 border-r border-primary/20 flex flex-col">
             <h2 className="p-4 font-bold text-lg text-foreground">Chats</h2>
             <div className="flex-1 overflow-y-auto">
               {chats.map((chat) => (
@@ -134,7 +127,7 @@ const Wchatapp = () => {
           </div>
 
           {/* Chat Window */}
-          <div className="flex flex-col">
+          <div className="flex-1 flex flex-col">
             {/* Header */}
             <div className="bg-gradient-primary text-primary-foreground p-4 font-semibold shadow-md">
               {chats.find((c) => c.id === selectedChat)?.name || "Select a chat"}
